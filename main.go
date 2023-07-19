@@ -42,7 +42,6 @@ func main() {
 	e.Any("/api/ping", func(ctx *gin.Context) {
 		ctx.JSON(200, "pong")
 	})
-
 	
 	log.Fatalln(e.Run())
 }
