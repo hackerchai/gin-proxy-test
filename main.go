@@ -29,15 +29,15 @@ func Cors() gin.HandlerFunc {
 }
 
 func main() {
-	config, err := rest.InClusterConfig()
-	if err != nil {
-		panic(err.Error())
-	}
-	// creates the clientset
-	clientset, err := kubernetes.NewForConfig(config)
-	if err != nil {
-		panic(err.Error())
-	}
+	// config, err := rest.InClusterConfig()
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
+	// // creates the clientset
+	// clientset, err := kubernetes.NewForConfig(config)
+	// if err != nil {
+	// 	panic(err.Error())
+	// }
 	e := gin.Default()
 	e.Use(Cors())
 	e.Any("/api/setcookie", func(ctx *gin.Context) {
@@ -54,13 +54,13 @@ func main() {
 	e.Any("/api/ping", func(ctx *gin.Context) {
 		ctx.JSON(200, "pong")
 	})
-	e.Any("/k8s", func(ctx *gin.Context) {
-		dl, err := clientset.AppsV1().Deployments("zeabur-system").List(ctx, v1.ListOptions{})
-		if err != nil {
-			ctx.JSON(200, err)
-			return
-		}
-		ctx.JSON(200, dl.Items)
-	})
+	// e.Any("/k8s", func(ctx *gin.Context) {
+	// 	dl, err := clientset.AppsV1().Deployments("zeabur-system").List(ctx, v1.ListOptions{})
+	// 	if err != nil {
+	// 		ctx.JSON(200, err)
+	// 		return
+	// 	}
+	// 	ctx.JSON(200, dl.Items)
+	// })
 	log.Fatalln(e.Run())
 }
