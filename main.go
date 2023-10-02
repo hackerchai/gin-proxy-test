@@ -5,6 +5,9 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
+
+	"log/slog"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,7 +31,11 @@ func Cors() gin.HandlerFunc {
 }
 
 func main() {
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{}))
 	e := gin.Default()
+	gin.DebugPrintRouteFunc = func(httpMethod, absolutePath, handlerName string, nuHandlers int) {
+		logger.Info(handlerName, "METHOD", httpMethod, "PATH", absolutePath, "nuHandlers", nuHandlers)
+	}
 	e.Use(Cors())
 	e.Any("/api/setcookie", func(ctx *gin.Context) {
 		ctx.SetCookie("gin_cookie", "test", 3600, "/", ".zeabur.app", false, false)
